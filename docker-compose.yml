@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+  # Development container. Runs in debug mode and live-reloading on every source file update.
+  development:
+    hostname: backend-api
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+      target: dev
+    volumes:
+      - type: bind
+        source: ./backend
+        target: /home/api
+    working_dir: /home/api
+    ports:
+      - "8081:8081"
+    command: bash -c "go mod download && make serve"
