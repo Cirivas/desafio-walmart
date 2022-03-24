@@ -1,8 +1,10 @@
-package infrastructure
+package datastore
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -15,8 +17,12 @@ type DbConnection struct {
 
 func NewDB() *DbConnection {
 	// Create client
-	// ToDO: Add URI
-	client, err := mongo.NewClient(options.Client().ApplyURI("..."))
+	username := os.Getenv("DB_USERNAME")
+	password := os.Getenv("DB_PASSWORD")
+
+	dbURI := fmt.Sprintf("mongodb://%s:%s@mongo:27017/desafio_walmart?authSource=admin", username, password)
+
+	client, err := mongo.NewClient(options.Client().ApplyURI(dbURI))
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -34,6 +40,7 @@ func NewDB() *DbConnection {
 // Close client connection
 func (db *DbConnection) Close() {
 	// Disconnect client with context
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 	db.Client.Disconnect(ctx)
 }
