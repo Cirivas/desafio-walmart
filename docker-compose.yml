@@ -17,3 +17,23 @@ services:
     ports:
       - "8081:8081"
     command: bash -c "go mod download && make serve"
+  mongo:
+    image: mongo:3.6.8
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=brandDiscountsUser
+      - MONGO_INITDB_ROOT_PASSWORD=brandDiscountsPassword
+  # run once to populate db
+  mongo_setup:
+    image: mongo:3.6.8
+    depends_on:
+      - mongo
+    restart: "no"
+    volumes:
+      - type: bind
+        source: ./database
+        target: /database
+    entrypoint: bash -c './database/import.sh mongo:27017'
+
+  
