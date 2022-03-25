@@ -12,7 +12,8 @@ import (
 )
 
 type DbConnection struct {
-	Client *mongo.Client
+	client *mongo.Client
+	Db     *mongo.Database
 }
 
 func NewDB() *DbConnection {
@@ -20,7 +21,7 @@ func NewDB() *DbConnection {
 	username := os.Getenv("DB_USERNAME")
 	password := os.Getenv("DB_PASSWORD")
 
-	dbURI := fmt.Sprintf("mongodb://%s:%s@mongo:27017/desafio_walmart?authSource=admin", username, password)
+	dbURI := fmt.Sprintf("mongodb://%s:%s@mongo:27017/?authSource=admin", username, password)
 
 	client, err := mongo.NewClient(options.Client().ApplyURI(dbURI))
 	if err != nil {
@@ -36,7 +37,7 @@ func NewDB() *DbConnection {
 		log.Fatalln(err)
 	}
 
-	return &DbConnection{Client: client}
+	return &DbConnection{Db: client.Database("desafio_walmart")}
 }
 
 // Close client connection
@@ -44,5 +45,5 @@ func (db *DbConnection) Close() {
 	// Disconnect client with context
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	db.Client.Disconnect(ctx)
+	db.client.Disconnect(ctx)
 }
