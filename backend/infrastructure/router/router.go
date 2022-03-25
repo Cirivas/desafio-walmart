@@ -19,6 +19,7 @@ func NewRouter(ctrl controllers.MainController) Router {
 	router := mux.NewRouter()
 
 	router.Handle("/products", http.HandlerFunc(ctrl.ProductsController.GetProducts)).Methods("GET")
+	router.Handle("/discounts/{brand}", http.HandlerFunc(ctrl.DiscountsController.GetDiscount)).Methods("GET")
 
 	a := &api{router}
 	return a
