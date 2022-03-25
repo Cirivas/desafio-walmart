@@ -18,7 +18,7 @@ type api struct {
 func NewRouter(ctrl controllers.MainController) Router {
 	router := mux.NewRouter()
 
-	router.Handle("/products", http.HandlerFunc(ctrl.ProductsController.GetProducts))
+	router.Handle("/products", http.HandlerFunc(ctrl.ProductsController.GetProducts)).Methods("GET")
 
 	a := &api{router}
 	return a
