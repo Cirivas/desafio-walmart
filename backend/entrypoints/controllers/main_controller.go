@@ -1,5 +1,5 @@
 package controllers
 
-type MainController interface {
+type MainController struct {
 	ProductsController
 }
