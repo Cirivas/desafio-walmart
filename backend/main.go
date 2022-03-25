@@ -22,5 +22,5 @@ func main() {
 	methods := gorillaHandlers.AllowedMethods([]string{"DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"})
 	origins := gorillaHandlers.AllowedOrigins([]string{"*"})
 
-	log.Fatal(http.ListenAndServe(":8080", gorillaHandlers.CORS(headers, methods, origins)(api.Router())))
+	log.Fatal(http.ListenAndServe(":8081", gorillaHandlers.CORS(headers, methods, origins)(api.Router())))
 }
