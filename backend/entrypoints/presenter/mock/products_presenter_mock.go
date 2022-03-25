@@ -47,3 +47,17 @@ func (mr *MockProductPresenterMockRecorder) ProductsDto(p interface{}) *gomock.C
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ProductsDto", reflect.TypeOf((*MockProductPresenter)(nil).ProductsDto), p)
 }
+
+// ResponseProducts mocks base method.
+func (m *MockProductPresenter) ResponseProducts(p []models.Product) []models.Product {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ResponseProducts", p)
+	ret0, _ := ret[0].([]models.Product)
+	return ret0
+}
+
+// ResponseProducts indicates an expected call of ResponseProducts.
+func (mr *MockProductPresenterMockRecorder) ResponseProducts(p interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ResponseProducts", reflect.TypeOf((*MockProductPresenter)(nil).ResponseProducts), p)
+}
