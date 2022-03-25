@@ -19,6 +19,7 @@ func NewRegistry(db *datastore.DbConnection) Registry {
 
 func (r *registry) NewMainController() controllers.MainController {
 	return controllers.MainController{
-		ProductsController: r.NewProductsController(),
+		ProductsController:  r.NewProductsController(),
+		DiscountsController: r.NewDiscountsController(),
 	}
 }
