@@ -1,5 +1,5 @@
 import { Discount } from "./discount";
-import { ShoppingCart } from "./shopppingCart"
+import { ShoppingCart } from "./shopppingCart";
 
 export type Order = {
     shoppingCart: ShoppingCart;
