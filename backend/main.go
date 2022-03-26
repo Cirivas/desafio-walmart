@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/Cirivas/desafio-walmart/infrastructure/datastore"
 	"github.com/Cirivas/desafio-walmart/infrastructure/router"
@@ -22,5 +23,7 @@ func main() {
 	methods := gorillaHandlers.AllowedMethods([]string{"DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"})
 	origins := gorillaHandlers.AllowedOrigins([]string{"*"})
 
-	log.Fatal(http.ListenAndServe(":8081", gorillaHandlers.CORS(headers, methods, origins)(api.Router())))
+	loggedRouter := gorillaHandlers.LoggingHandler(os.Stdout, api.Router())
+
+	log.Fatal(http.ListenAndServe(":8081", gorillaHandlers.CORS(headers, methods, origins)(loggedRouter)))
 }
