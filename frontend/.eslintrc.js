@@ -19,7 +19,9 @@ module.exports = {
         "eslint-plugin-prefer-arrow",
         "eslint-plugin-react",
         "@typescript-eslint",
-        "@typescript-eslint/tslint"
+        "@typescript-eslint/tslint",
+        "react",
+        "react-hooks"
     ],
     "rules": {
         "@typescript-eslint/adjacent-overload-signatures": "error",
@@ -135,9 +137,6 @@ module.exports = {
             "error",
             "smart"
         ],
-        "flowtype/define-flow-type": "warn",
-        "flowtype/require-valid-file-annotation": "warn",
-        "flowtype/use-flow-type": "warn",
         "getter-return": "warn",
         "guard-for-in": "error",
         "id-denylist": [
@@ -153,44 +152,10 @@ module.exports = {
             "undefined"
         ],
         "id-match": "error",
-        "import/first": "error",
-        "import/no-amd": "error",
-        "import/no-anonymous-default-export": "warn",
-        "import/no-webpack-loader-syntax": "error",
         "indent": "off",
         "jsdoc/check-alignment": "error",
         "jsdoc/check-indentation": "error",
         "jsdoc/newline-after-description": "error",
-        "jsx-a11y/alt-text": "warn",
-        "jsx-a11y/anchor-has-content": "warn",
-        "jsx-a11y/anchor-is-valid": [
-            "warn",
-            {
-                "aspects": [
-                    "noHref",
-                    "invalidHref"
-                ]
-            }
-        ],
-        "jsx-a11y/aria-activedescendant-has-tabindex": "warn",
-        "jsx-a11y/aria-props": "warn",
-        "jsx-a11y/aria-proptypes": "warn",
-        "jsx-a11y/aria-role": [
-            "warn",
-            {
-                "ignoreNonDOM": true
-            }
-        ],
-        "jsx-a11y/aria-unsupported-elements": "warn",
-        "jsx-a11y/heading-has-content": "warn",
-        "jsx-a11y/iframe-has-title": "warn",
-        "jsx-a11y/img-redundant-alt": "warn",
-        "jsx-a11y/no-access-key": "warn",
-        "jsx-a11y/no-distracting-elements": "warn",
-        "jsx-a11y/no-redundant-roles": "warn",
-        "jsx-a11y/role-has-required-aria-props": "warn",
-        "jsx-a11y/role-supports-aria-props": "warn",
-        "jsx-a11y/scope": "warn",
         "linebreak-style": "off",
         "max-classes-per-file": [
             "error",
@@ -203,7 +168,7 @@ module.exports = {
         "no-bitwise": "error",
         "no-caller": "error",
         "no-cond-assign": "error",
-        "no-console": "error",
+        // "no-console": "error",
         "no-const-assign": "warn",
         "no-control-regex": "warn",
         "no-debugger": "error",
@@ -420,7 +385,7 @@ module.exports = {
                 "allowSingleLineBlocks": true
             }
         ],
-        "prefer-arrow/prefer-arrow-functions": "error",
+        // "prefer-arrow/prefer-arrow-functions": "error",
         "prefer-const": "error",
         "quote-props": "off",
         "quotes": "off",
