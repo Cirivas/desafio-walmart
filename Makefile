@@ -1,5 +1,5 @@
 start:
-	docker-compose up development mongo
+	docker-compose up development-backend development-frontend mongo
 
 build:
 	docker-compose build
