@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   # Development container. Runs in debug mode and live-reloading on every source file update.
-  development:
+  development-backend:
     hostname: backend-api
     restart: unless-stopped
     build:
@@ -20,6 +20,26 @@ services:
       - DB_USERNAME=brandDiscountsUser
       - DB_PASSWORD=brandDiscountsPassword
     command: bash -c "go mod download && make serve"
+
+  development-frontend:
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+    volumes:
+      - type: bind
+        source: ./frontend/node_modules
+        target: /app/node_modules    
+      - type: bind
+        source: ./frontend
+        target: /app
+    ports:
+      - 3001:3000
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WDS_SOCKET_PORT=0
+    command: sh -c 'CHOKIDAR_USEPOLLING=true npm start'
+
+      
   mongo:
     image: mongo:3.6.8
     ports:
@@ -27,6 +47,7 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=brandDiscountsUser
       - MONGO_INITDB_ROOT_PASSWORD=brandDiscountsPassword
+
   # run once to populate db
   mongo_setup:
     image: mongo:3.6.8
