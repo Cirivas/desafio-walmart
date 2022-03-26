@@ -2,7 +2,7 @@ jest.mock("../presenter/mock/discounts.presenter.mock");
 jest.mock("../repository/mock/discounts.repository.mock");
 import discountsPresenterMock from "../presenter/mock/discounts.presenter.mock";
 import discountsRepositoryMock from "../repository/mock/discounts.repository.mock";
-import { newDiscountsInteractor } from "./discounts.interactor";
+import { useDiscountsInteractor } from "./discounts.interactor";
 
 describe("discounts getter", () => {
   it("should get one discount", (done) => {
@@ -26,7 +26,7 @@ describe("discounts getter", () => {
       )
     );
 
-    const interactor = newDiscountsInteractor(
+    const interactor = useDiscountsInteractor(
       discountsRepository,
       discountsPresenter
     );

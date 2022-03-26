@@ -5,7 +5,7 @@ import { DiscountsRepository } from "../repository/discounts.repository";
 export interface DiscountsInteractor {
   getFromBrand(brand: string): Promise<Discount>;
 }
-export function newDiscountsInteractor(
+export function useDiscountsInteractor(
   dr: DiscountsRepository,
   dp: DiscountsPresenter
 ): DiscountsInteractor {

@@ -4,7 +4,7 @@ jest.mock("../presenter/mock/product.presenter.mock");
 import { Product } from "../../domain/product";
 import productPresenterMock from "../presenter/mock/product.presenter.mock";
 import productsRepositoryMock from "../repository/mock/products.repository.mock";
-import { newProductInteractor } from "./products.interactor";
+import { useProductInteractor } from "./products.interactor";
 
 describe("getting products", () => {
   it("should get all products", (done) => {
@@ -29,7 +29,7 @@ describe("getting products", () => {
       jest.fn((p: Product[]) => p)
     );
 
-    const interactor = newProductInteractor(
+    const interactor = useProductInteractor(
       productsRepository,
       productsPresenter
     );

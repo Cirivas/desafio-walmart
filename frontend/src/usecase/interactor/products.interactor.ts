@@ -6,7 +6,7 @@ export interface ProductInteractor {
   getAll(): Promise<Product[]>;
 }
 
-export function newProductInteractor(
+export function useProductInteractor(
   pr: ProductsRepository,
   pp: ProductsPresenter
 ): ProductInteractor {
