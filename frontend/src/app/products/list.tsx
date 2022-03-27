@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { ProductsController } from "../../adapters/products/products.controller";
 import { Product } from "../../domain/product";
-import { Item } from "../ui-components/list/item";
 import { List } from "../ui-components/list/list";
 
 type ProductListProps = {
@@ -25,15 +24,32 @@ export const ProductList = ({ prodCtrl }: ProductListProps) => {
       });
   }, [prodCtrl]);
 
-  const handleClick = useCallback((item: Item) => {
-    const product = item as Product;
+  const handleClick = useCallback((product: Product) => {
     console.log(product.brand);
   }, []);
+
+  const keyExtractor = useCallback((product: Product) => {
+    return `${product.id}-${product.brand}-${product.price}`;
+  }, []);
+
+  const productRenderer = useCallback(
+    (product: Product) => (
+      <li>
+        {product.brand} {product.price}
+      </li>
+    ),
+    []
+  );
 
   return (
     <div>
       <h1>Productos</h1>
-      <List itemList={products} onClick={handleClick} />
+      <List
+        itemList={products}
+        onClick={handleClick}
+        keyExtractor={keyExtractor}
+        renderer={productRenderer}
+      />
     </div>
   );
 };

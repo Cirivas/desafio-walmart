@@ -1,23 +1,34 @@
 import React, { useCallback } from "react";
-import { Item, ListItem } from "./item";
+import { ListItem } from "./item";
 
-type ListProps = {
-  itemList: Item[];
-  onClick: (i: Item) => void;
+type ListProps<T> = {
+  itemList: T[];
+  onClick: (i: T) => void;
+  renderer: (i: T) => JSX.Element;
+  keyExtractor: (i: T) => string;
 };
 
-export const List = ({ itemList, onClick }: ListProps) => {
-  const handleClick = useCallback((item: Item) => onClick(item), [onClick]);
-
+export function List<T>({
+  itemList,
+  onClick,
+  renderer,
+  keyExtractor,
+}: ListProps<T>) {
+  const handleClick = useCallback((item: T) => onClick(item), [onClick]);
+  const extractKey = useCallback(
+    (item: T) => keyExtractor(item),
+    [keyExtractor]
+  );
   return (
     <ul>
       {itemList.map((item) => (
         <ListItem
-          key={`${item.id}-${item.brand}-${item.price}`}
+          key={extractKey(item)}
           item={item}
           onClick={handleClick}
+          renderer={renderer}
         />
       ))}
     </ul>
   );
-};
+}

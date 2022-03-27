@@ -8,12 +8,13 @@ export type Item = {
   brand: string;
 };
 
-type ListItemProps = {
-  item: Item;
-  onClick: (i: Item) => void;
+type ListItemProps<T> = {
+  item: T;
+  onClick: (i: T) => void;
+  renderer: (i: T) => JSX.Element;
 };
 
-export const ListItem = ({ item, onClick }: ListItemProps) => {
+export function ListItem<T>({ item, onClick, renderer }: ListItemProps<T>) {
   const handleClick = useCallback(() => onClick(item), [item, onClick]);
-  return <li onClick={handleClick}>item: {item.description}</li>;
-};
+  return <div onClick={handleClick}>{renderer(item)}</div>;
+}
