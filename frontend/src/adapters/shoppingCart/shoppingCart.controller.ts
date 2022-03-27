@@ -9,11 +9,13 @@ export interface ShoppingCartController {
 }
 
 export function useShoppingCartController(
-  sci: ShoppingCartInteractor
+  shoppingCartInteractor: ShoppingCartInteractor
 ): ShoppingCartController {
   return {
-    addProduct: (product: Product) => sci.addProduct(product),
-    removeProduct: (product: Product) => sci.removeProduct(product),
-    getCart: () => sci.get(),
+    addProduct: (product: Product) =>
+      shoppingCartInteractor.addProduct(product),
+    removeProduct: (product: Product) =>
+      shoppingCartInteractor.removeProduct(product),
+    getCart: () => shoppingCartInteractor.get(),
   };
 }

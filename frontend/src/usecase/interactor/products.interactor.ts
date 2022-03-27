@@ -7,10 +7,13 @@ export interface ProductInteractor {
 }
 
 export function useProductInteractor(
-  pr: ProductsRepository,
-  pp: ProductsPresenter
+  productsRepository: ProductsRepository,
+  productsPresenter: ProductsPresenter
 ): ProductInteractor {
   return {
-    getAll: () => pr.findAll().then((result) => pp.responseProducts(result)),
+    getAll: () =>
+      productsRepository
+        .findAll()
+        .then((result) => productsPresenter.responseProducts(result)),
   };
 }

@@ -6,11 +6,13 @@ export interface DiscountsInteractor {
   getFromBrand(brand: string): Promise<Discount>;
 }
 export function useDiscountsInteractor(
-  dr: DiscountsRepository,
-  dp: DiscountsPresenter
+  discountsRepository: DiscountsRepository,
+  discountsPresenter: DiscountsPresenter
 ): DiscountsInteractor {
   return {
     getFromBrand: (brand: string) =>
-      dr.find(brand).then((result) => dp.responseDiscount(result)),
+      discountsRepository
+        .find(brand)
+        .then((result) => discountsPresenter.responseDiscount(result)),
   };
 }

@@ -7,9 +7,9 @@ export interface ProductsController {
 
 // comment
 export function useProductsController(
-  pi: ProductInteractor
+  productInteractor: ProductInteractor
 ): ProductsController {
   return {
-    getAll: () => pi.getAll(),
+    getAll: () => productInteractor.getAll(),
   };
 }
