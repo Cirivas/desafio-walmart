@@ -1,5 +1,10 @@
-import { Product } from "./product"
+import { Product } from "./product";
+
+export type CartElement = {
+  product: Product;
+  quantity: number;
+};
 
 export type ShoppingCart = {
-    products: Product[]
-}
+  products: CartElement[];
+};
