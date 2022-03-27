@@ -1,9 +1,9 @@
 import { ProductsController } from "./products/products.controller";
 
 export interface MainController {
-  productsController?: ProductsController | null;
+  productsController: ProductsController;
 }
 
 export default {
-  productsController: null,
+  productsController: {},
 } as MainController;
