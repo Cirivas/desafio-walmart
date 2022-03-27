@@ -9,6 +9,7 @@ export interface ProductsRepository {
 export function useProductsRepository(): ProductsRepository {
   return {
     // todo: add fail case
-    findAll: () => api.request(endpoints.products.list),
+    findAll: () =>
+      api.request<Product[]>(endpoints.products.list).then((r) => r.data),
   };
 }
