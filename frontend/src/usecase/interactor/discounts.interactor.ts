@@ -10,6 +10,7 @@ export function useDiscountsInteractor(
   dp: DiscountsPresenter
 ): DiscountsInteractor {
   return {
-    getFromBrand: (brand: string) => dr.find(brand).then(dp.responseDiscount),
+    getFromBrand: (brand: string) =>
+      dr.find(brand).then((result) => dp.responseDiscount(result)),
   };
 }
