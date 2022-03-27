@@ -5,10 +5,10 @@ import { useRegistry } from "./registry/registry";
 
 function App() {
   const registry = useRegistry();
-  const mainController = registry.mainController;
+  const { productsController } = registry.mainController;
   return (
     <div className="App">
-      <ProductList prodCtrl={mainController.productsController!} />
+      <ProductList prodCtrl={productsController} />
     </div>
   );
 }

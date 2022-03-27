@@ -1,26 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { ProductsController } from "../../adapters/products/products.controller";
 import { Product } from "../../domain/product";
+import { Item } from "../ui-components/list/item";
+import { List } from "../ui-components/list/list";
 
-export const ProductList = (props: { prodCtrl: ProductsController }) => {
+type ProductListProps = {
+  prodCtrl: ProductsController;
+};
+
+export const ProductList = ({ prodCtrl }: ProductListProps) => {
   const [products, setProducts] = useState<Product[]>([]);
 
   // Load products
   useEffect(() => {
-    console.log("effect");
-
-    props.prodCtrl
+    prodCtrl
       .getAll()
       .then((result) => {
-        setProducts(result);
+        if (result) {
+          setProducts(result);
+        }
       })
-      .catch(console.error);
-  }, [props.prodCtrl]);
+      .catch((err) => {
+        console.error(err);
+      });
+  }, [prodCtrl]);
+
+  const handleClick = useCallback((item: Item) => {
+    const product = item as Product;
+    console.log(product.brand);
+  }, []);
 
   return (
     <div>
       <h1>Productos</h1>
-      {products.map((product) => product.brand)}
+      <List itemList={products} onClick={handleClick} />
     </div>
   );
 };
