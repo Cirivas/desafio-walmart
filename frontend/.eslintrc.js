@@ -4,15 +4,12 @@ module.exports = {
         "node": true
     },
     "extends": [
-        "plugin:@typescript-eslint/recommended",
-        "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "plugin:react/recommended",
         "prettier"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-        "project": "tsconfig.json",
-        "sourceType": "module"
+       
     },
     "plugins": [
         "eslint-plugin-jsdoc",
@@ -23,6 +20,21 @@ module.exports = {
         "react",
         "react-hooks"
     ],
+    "overrides": [
+        {
+          "files": ['*.ts', '*.tsx'],
+          "extends": [
+            "plugin:@typescript-eslint/recommended",
+            "plugin:@typescript-eslint/recommended-requiring-type-checking",
+          ],
+    
+          "parserOptions": {
+            "project": "tsconfig.json",
+            "tsconfigRootDir": __dirname,
+            "sourceType": "module",
+          },
+        },
+      ],
     "rules": {
         "@typescript-eslint/adjacent-overload-signatures": "error",
         "@typescript-eslint/array-type": [

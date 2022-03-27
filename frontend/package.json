@@ -42,6 +42,7 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/react-hooks": "^7.0.2",
     "@typescript-eslint/eslint-plugin": "^5.16.0",
     "@typescript-eslint/eslint-plugin-tslint": "^5.16.0",
     "@typescript-eslint/parser": "^5.16.0",
@@ -50,6 +51,7 @@
     "eslint-plugin-jsdoc": "^38.0.7",
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "eslint-plugin-react": "^7.29.4",
-    "prettier": "^2.6.1"
+    "prettier": "^2.6.1",
+    "react-test-renderer": "^17.0.2"
   }
 }
