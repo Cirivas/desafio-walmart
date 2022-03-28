@@ -4,6 +4,7 @@ export interface Endpoint {
   [key: string]: {
     method: Method | undefined;
     url: string;
+    params?: { [key: string]: string };
   };
 }
 
@@ -12,6 +13,12 @@ export const endpoints: { [key: string]: Endpoint } = {
     list: {
       method: "GET",
       url: "products",
+    },
+  },
+  discounts: {
+    get: {
+      method: "GET",
+      url: "discounts",
     },
   },
 };
