@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Discount } from "../../domain/discount";
 import { Product } from "../../domain/product";
 import { CartElement, ShoppingCart } from "../../domain/shopppingCart";
 
@@ -6,14 +7,23 @@ export interface ShoppingCartRepository {
   add(product: Product): void;
   remove(product: Product): void;
   getShoppingCart(): ShoppingCart;
+  addPossibleDiscount(discount: Discount): void;
+  removePossibleDiscount(discount: Discount): void;
+  getPossibleDiscounts(): Discount[];
+  setUsedDiscount(discount: Discount): void;
+  getUsedDiscount(): Discount | null | undefined;
 }
 
-export function useShoppingCartRepository() {
-  const [cart, setCart] = useState<ShoppingCart>({ products: [] });
+export function useShoppingCartRepository(): ShoppingCartRepository {
+  const [cart, setCart] = useState<ShoppingCart>({
+    products: [],
+    possibleDiscounts: [],
+  });
 
   return {
     add: (product: Product) => {
       const { products } = cart;
+      console.log("adding new product", cart, product, products);
       const index = products.findIndex(
         (elm: CartElement) => product.id === elm.product.id
       );
@@ -22,7 +32,11 @@ export function useShoppingCartRepository() {
         const existingProduct = products[index];
         existingProduct.quantity = existingProduct.quantity + 1;
         products[index] = existingProduct;
-        setCart({ products });
+        console.log("product quantity increased", cart);
+        setCart((currentCart) => ({
+          ...currentCart,
+          products,
+        }));
         return;
       }
 
@@ -32,7 +46,14 @@ export function useShoppingCartRepository() {
         quantity: 1,
       };
 
-      setCart({ products: [...cart.products, newElement] });
+      console.log("added new element", [...cart.products, newElement]);
+
+      setCart((currentCart) => ({
+        ...currentCart,
+        products: [...currentCart.products, newElement],
+      }));
+
+      console.log("cart", cart);
     },
     remove: (product: Product) => {
       const { products } = cart;
@@ -52,9 +73,59 @@ export function useShoppingCartRepository() {
         products.splice(index, 1);
       }
 
-      setCart({ products });
+      setCart((currentCart) => ({
+        ...currentCart,
+        products,
+      }));
       return;
     },
     getShoppingCart: () => cart,
+
+    addPossibleDiscount: (discount: Discount) => {
+      // Check if discount doesnt exist first
+      const index = cart.possibleDiscounts.findIndex(
+        ({ brand }) => discount.brand === brand
+      );
+
+      // Discount already exist, dont add it
+      if (index > -1) {
+        return;
+      }
+
+      setCart((currentCart) => ({
+        ...currentCart,
+        possibleDiscounts: [...currentCart.possibleDiscounts, discount],
+      }));
+    },
+
+    getPossibleDiscounts: () => cart.possibleDiscounts,
+
+    removePossibleDiscount: (discount: Discount) => {
+      console.log("remove possible discount", cart);
+      const index = cart.possibleDiscounts.findIndex(
+        ({ brand }) => discount.brand === brand
+      );
+      // Discount doesnt exist
+      if (index < 0) {
+        return;
+      }
+      console.log("remove possible discount", index, cart.possibleDiscounts);
+      const newPossibleDiscounts = cart.possibleDiscounts;
+      newPossibleDiscounts.splice(index, 1);
+      setCart((currentCart) => ({
+        ...currentCart,
+        possibleDiscounts: newPossibleDiscounts,
+      }));
+    },
+
+    setUsedDiscount: (discount?: Discount) => {
+      console.log("set discount", cart);
+      setCart((currentCart) => ({
+        ...currentCart,
+        usedDiscount: discount,
+      }));
+    },
+
+    getUsedDiscount: () => cart.usedDiscount,
   };
 }

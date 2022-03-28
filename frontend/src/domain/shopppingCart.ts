@@ -1,3 +1,4 @@
+import { Discount } from "./discount";
 import { Product } from "./product";
 
 export type CartElement = {
@@ -7,4 +8,6 @@ export type CartElement = {
 
 export type ShoppingCart = {
   products: CartElement[];
+  possibleDiscounts: Discount[];
+  usedDiscount?: Discount;
 };

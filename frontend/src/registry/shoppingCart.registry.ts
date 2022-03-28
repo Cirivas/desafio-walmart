@@ -8,9 +8,13 @@ import {
   useShoppingCartInteractor,
 } from "../usecase/interactor/shoppingCart.interactor";
 import { ShoppingCartRepository } from "../usecase/repository/shoppingCart.repository";
+import { GetDiscountsInteractor } from "./discounts.registry";
 
 export function GetShoppingCartRegistry(): ShoppingCartController {
-  return useShoppingCartController(GetShoppingCartInteractor());
+  return useShoppingCartController(
+    GetShoppingCartInteractor(),
+    GetDiscountsInteractor()
+  );
 }
 
 function GetShoppingCartInteractor(): ShoppingCartInteractor {

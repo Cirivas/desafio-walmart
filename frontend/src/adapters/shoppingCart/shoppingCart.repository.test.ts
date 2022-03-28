@@ -20,7 +20,10 @@ describe("add product", () => {
       price: 555,
     };
 
-    const expectedCart: ShoppingCart = { products: [{ product, quantity: 1 }] };
+    const expectedCart: ShoppingCart = {
+      products: [{ product, quantity: 1 }],
+      possibleDiscounts: [],
+    };
 
     expect(repo.current.getShoppingCart().products.length).toBe(0);
 
@@ -43,7 +46,10 @@ describe("add product", () => {
       price: 555,
     };
 
-    const expectedCart: ShoppingCart = { products: [{ product, quantity: 2 }] };
+    const expectedCart: ShoppingCart = {
+      products: [{ product, quantity: 2 }],
+      possibleDiscounts: [],
+    };
 
     expect(repo.current.getShoppingCart().products.length).toBe(0);
 
@@ -67,7 +73,7 @@ describe("add product", () => {
       price: 555,
     };
 
-    const expectedCart: ShoppingCart = { products: [] };
+    const expectedCart: ShoppingCart = { products: [], possibleDiscounts: [] };
 
     expect(repo.current.getShoppingCart().products.length).toBe(0);
 
@@ -91,7 +97,10 @@ describe("add product", () => {
       price: 555,
     };
 
-    const expectedCart: ShoppingCart = { products: [{ product, quantity: 1 }] };
+    const expectedCart: ShoppingCart = {
+      products: [{ product, quantity: 1 }],
+      possibleDiscounts: [],
+    };
 
     expect(repo.current.getShoppingCart().products.length).toBe(0);
 
