@@ -66,7 +66,7 @@ export function ShoppingCart({ shoppingCartCtrl }: CartListProps) {
     return (
       <div className="bubble possible-discount">
         Agrega {<Money value={discount.threshold - totalByBrand} />} en
-        producots {discount.brand} y aprovecho un descuento total de{" "}
+        productos {discount.brand} y aprovecha un descuento total de{" "}
         {<Money value={discount.discount} />} en tu compra!
       </div>
     );
@@ -83,7 +83,7 @@ export function ShoppingCart({ shoppingCartCtrl }: CartListProps) {
           />
           {usedDiscount && (
             <div className="bubble used-discount">
-              Se aplico un descuento de{" "}
+              Se aplicó un descuento de{" "}
               {<Money value={usedDiscount.discount} />} por haber comprado{" "}
               {<Money value={usedDiscount.threshold} />} en productos{" "}
               {usedDiscount.brand}{" "}
@@ -95,7 +95,7 @@ export function ShoppingCart({ shoppingCartCtrl }: CartListProps) {
           </h3>
         </>
       )}
-      {cart.products.length === 0 && <span>Tu carro esta vacio</span>}
+      {cart.products.length === 0 && <span>Tu carro está vacío</span>}
     </div>
   );
 }
