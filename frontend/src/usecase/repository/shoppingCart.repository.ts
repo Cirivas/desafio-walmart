@@ -7,6 +7,7 @@ export interface ShoppingCartRepository {
   remove(product: Product): void;
   getShoppingCart(): ShoppingCart;
   addPossibleDiscount(discount: Discount): void;
+  setPossibleDiscounts(discounts: Discount[]): void;
   removePossibleDiscount(discount: Discount): void;
   getPossibleDiscounts(): Discount[];
   setUsedDiscount(discount?: Discount): void;

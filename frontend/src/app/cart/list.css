@@ -1,0 +1,32 @@
+.side-list-container {
+  width: 500px;
+  margin: auto;
+  box-shadow: 5px 5px 20px 0 rgb(0 0 0 / 10%);
+  padding: 32px;
+  position: absolute;
+  background-color: white;
+  overflow-y: scroll;
+  height: 500px;
+  text-align: center;
+}
+
+.side-list-container span {
+  font-size: 28px;
+}
+
+.side-list-container .bubble {
+  margin: 8px;
+  padding: 16px;
+  border-radius: 16px;
+  text-align: left;
+}
+
+.side-list-container .bubble.used-discount {
+  background-color: #77dd77;
+  color: white;
+}
+
+.side-list-container .bubble.possible-discount {
+  background-color: #de1738;
+  color: white;
+}

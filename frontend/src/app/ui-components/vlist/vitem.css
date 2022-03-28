@@ -1,0 +1,30 @@
+.vitem-container {
+  display: flex;
+  align-items: center;
+  margin: 32px;
+  padding: 8px;
+}
+.vitem-container .price span {
+  font-size: 20px;
+}
+
+.vitem-container .description {
+  font-weight: 500;
+}
+
+.vitem-container .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.middle {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  text-align: right;
+}
+
+.total {
+  font-size: 32px;
+}

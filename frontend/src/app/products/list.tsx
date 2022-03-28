@@ -1,13 +1,18 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { ProductsController } from "../../adapters/products/products.controller";
+import { ShoppingCartController } from "../../adapters/shoppingCart/shoppingCart.controller";
 import { Product } from "../../domain/product";
 import { List } from "../ui-components/list/list";
-
+import "./list.css";
 type ProductListProps = {
   prodCtrl: ProductsController;
+  shoppingCartCtrl: ShoppingCartController;
 };
 
-export const ProductList = ({ prodCtrl }: ProductListProps) => {
+export const ProductList = ({
+  prodCtrl,
+  shoppingCartCtrl,
+}: ProductListProps) => {
   const [products, setProducts] = useState<Product[]>([]);
 
   // Load products
@@ -24,31 +29,24 @@ export const ProductList = ({ prodCtrl }: ProductListProps) => {
       });
   }, [prodCtrl]);
 
-  const handleClick = useCallback((product: Product) => {
-    console.log(product.brand);
-  }, []);
+  const handleClickMore = useCallback(
+    (product: Product) => {
+      shoppingCartCtrl.addProduct(product);
+    },
+    [shoppingCartCtrl]
+  );
 
   const keyExtractor = useCallback((product: Product) => {
     return `${product.id}-${product.brand}-${product.price}`;
   }, []);
 
-  const productRenderer = useCallback(
-    (product: Product) => (
-      <li>
-        {product.brand} {product.price}
-      </li>
-    ),
-    []
-  );
-
   return (
-    <div>
+    <div className="list-container">
       <h1>Productos</h1>
       <List
         itemList={products}
-        onClick={handleClick}
+        onClickMore={handleClickMore}
         keyExtractor={keyExtractor}
-        renderer={productRenderer}
       />
     </div>
   );

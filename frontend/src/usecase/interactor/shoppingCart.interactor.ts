@@ -8,6 +8,7 @@ export interface ShoppingCartInteractor {
   removeProduct(product: Product): void;
   get(): ShoppingCart;
   addPossibleDiscount(discount: Discount): void;
+  setPossibleDiscounts(discounts: Discount[]): void;
   removePossibleDiscount(discount: Discount): void;
   getPossibleDiscounts(): Discount[];
   setUsedDiscount(discount?: Discount): void;
@@ -23,6 +24,9 @@ export function useShoppingCartInteractor(
     get: () => shoppingCartRepository.getShoppingCart(),
     addPossibleDiscount: (discount: Discount) =>
       shoppingCartRepository.addPossibleDiscount(discount),
+    setPossibleDiscounts: (discounts: Discount[]) => {
+      shoppingCartRepository.setPossibleDiscounts(discounts);
+    },
     removePossibleDiscount: (discount: Discount) =>
       shoppingCartRepository.removePossibleDiscount(discount),
     getPossibleDiscounts: () => shoppingCartRepository.getPossibleDiscounts(),

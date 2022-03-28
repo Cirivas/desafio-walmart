@@ -19,7 +19,7 @@ export function useShoppingCartController(
   /** Return true if possible is better */
   function compareDiscounts(possible: Discount, current: Discount): boolean {
     if (possible.discount === current.discount) {
-      return possible.threshold <= current.threshold;
+      return possible.threshold < current.threshold;
     }
     return possible.discount > current.discount;
   }
@@ -93,8 +93,6 @@ export function useShoppingCartController(
           ];
           const currentDiscount = shoppingCartInteractor.getUsedDiscount();
 
-          console.log(currentDiscount, currentPossibleDiscounts);
-
           // update possible discounts list
           if (
             !checkIfDiscountExist(
@@ -129,32 +127,67 @@ export function useShoppingCartController(
     },
     removeProduct: (newProduct: Product) => {
       // remove product from cart
-      shoppingCartInteractor.removeProduct(newProduct);
+      const shoppingCart = shoppingCartInteractor.get();
+      const products: CartElement[] = Object.assign([], shoppingCart.products);
+      const possibleDiscounts: Discount[] = Object.assign(
+        [],
+        shoppingCart.possibleDiscounts
+      );
+
+      const existsIndex = checkIfProductExists(newProduct.id, products);
+
+      if (existsIndex > -1) {
+        const existing = Object.assign({}, products[existsIndex]);
+        existing.quantity = existing.quantity - 1;
+        if (existing.quantity) {
+          products[existsIndex] = existing;
+        } else {
+          products.splice(existsIndex, 1);
+        }
+      } else {
+        return;
+      }
+
       // check if a discount was being applied and update if neccesary
       const currentDiscount = shoppingCartInteractor.getUsedDiscount();
-      if (!currentDiscount) {
-        // no discount was being applied
-        return;
-      }
-
-      if (currentDiscount.brand !== newProduct.brand) {
-        // current discount remains unaffected
-        return;
-      }
-
-      // check threshold and remove if neccesary
-      const shoppingCart = shoppingCartInteractor.get();
-      if (!checkThreshold(currentDiscount, shoppingCart.products)) {
-        // remove used discount
-        shoppingCartInteractor.setUsedDiscount();
-        // if there exist any remaining product of the same brand
-        // return the discount to the possibilites
-        if (checkIfBrandExist(newProduct.brand, shoppingCart.products)) {
-          shoppingCartInteractor.addPossibleDiscount(currentDiscount);
+      if (currentDiscount) {
+        // check threshold and remove if neccesary
+        if (!checkThreshold(currentDiscount, products)) {
+          // remove used discount
+          shoppingCartInteractor.setUsedDiscount();
+          // if there exist any remaining product of the same brand
+          // return the discount to the possibilites
+          if (checkIfBrandExist(newProduct.brand, products)) {
+            possibleDiscounts.push(currentDiscount);
+          }
         }
-
-        // ToDO: recalculate current discount
       }
+
+      // if there are no more products of that brand, remove its possible discounts
+      if (!checkIfBrandExist(newProduct.brand, products)) {
+        const discountIndex = possibleDiscounts.findIndex(
+          (d) => d.brand === newProduct.brand
+        );
+        if (discountIndex > -1) {
+          possibleDiscounts.splice(discountIndex, 1);
+        }
+      }
+
+      // check other discounts to apply it
+      const possibleNewDiscount = possibleDiscounts.find((discount) =>
+        checkThreshold(discount, products)
+      );
+
+      if (possibleNewDiscount) {
+        shoppingCartInteractor.setUsedDiscount(possibleNewDiscount);
+        const index = possibleDiscounts.findIndex(
+          (dis) => possibleNewDiscount.brand === dis.brand
+        );
+        possibleDiscounts.splice(index, 1);
+      }
+
+      shoppingCartInteractor.setPossibleDiscounts(possibleDiscounts);
+      shoppingCartInteractor.removeProduct(newProduct);
     },
 
     getCart: () => shoppingCartInteractor.get(),

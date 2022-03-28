@@ -8,6 +8,7 @@ export interface ShoppingCartRepository {
   remove(product: Product): void;
   getShoppingCart(): ShoppingCart;
   addPossibleDiscount(discount: Discount): void;
+  setPossibleDiscounts(discounts: Discount[]): void;
   removePossibleDiscount(discount: Discount): void;
   getPossibleDiscounts(): Discount[];
   setUsedDiscount(discount: Discount): void;
@@ -23,7 +24,6 @@ export function useShoppingCartRepository(): ShoppingCartRepository {
   return {
     add: (product: Product) => {
       const { products } = cart;
-      console.log("adding new product", cart, product, products);
       const index = products.findIndex(
         (elm: CartElement) => product.id === elm.product.id
       );
@@ -32,7 +32,6 @@ export function useShoppingCartRepository(): ShoppingCartRepository {
         const existingProduct = products[index];
         existingProduct.quantity = existingProduct.quantity + 1;
         products[index] = existingProduct;
-        console.log("product quantity increased", cart);
         setCart((currentCart) => ({
           ...currentCart,
           products,
@@ -46,14 +45,10 @@ export function useShoppingCartRepository(): ShoppingCartRepository {
         quantity: 1,
       };
 
-      console.log("added new element", [...cart.products, newElement]);
-
       setCart((currentCart) => ({
         ...currentCart,
         products: [...currentCart.products, newElement],
       }));
-
-      console.log("cart", cart);
     },
     remove: (product: Product) => {
       const { products } = cart;
@@ -72,11 +67,19 @@ export function useShoppingCartRepository(): ShoppingCartRepository {
         // if there is just one, remove it
         products.splice(index, 1);
       }
+      if (products.length) {
+        setCart((currentCart) => ({
+          ...currentCart,
+          products,
+        }));
+      } else {
+        setCart({
+          possibleDiscounts: [],
+          products: [],
+          usedDiscount: undefined,
+        });
+      }
 
-      setCart((currentCart) => ({
-        ...currentCart,
-        products,
-      }));
       return;
     },
     getShoppingCart: () => cart,
@@ -98,10 +101,18 @@ export function useShoppingCartRepository(): ShoppingCartRepository {
       }));
     },
 
+    setPossibleDiscounts: (discounts: Discount[]) => {
+      console.log("setting all discounts", discounts);
+      setCart((currentCart) => ({
+        ...currentCart,
+        possibleDiscounts: discounts,
+      }));
+    },
+
     getPossibleDiscounts: () => cart.possibleDiscounts,
 
     removePossibleDiscount: (discount: Discount) => {
-      console.log("remove possible discount", cart);
+      console.log("remove discount", discount, cart.possibleDiscounts);
       const index = cart.possibleDiscounts.findIndex(
         ({ brand }) => discount.brand === brand
       );
@@ -109,9 +120,10 @@ export function useShoppingCartRepository(): ShoppingCartRepository {
       if (index < 0) {
         return;
       }
-      console.log("remove possible discount", index, cart.possibleDiscounts);
+
       const newPossibleDiscounts = cart.possibleDiscounts;
-      newPossibleDiscounts.splice(index, 1);
+      console.log("removed", index, newPossibleDiscounts.splice(index, 1));
+      console.log("discounts", newPossibleDiscounts);
       setCart((currentCart) => ({
         ...currentCart,
         possibleDiscounts: newPossibleDiscounts,
@@ -119,7 +131,6 @@ export function useShoppingCartRepository(): ShoppingCartRepository {
     },
 
     setUsedDiscount: (discount?: Discount) => {
-      console.log("set discount", cart);
       setCart((currentCart) => ({
         ...currentCart,
         usedDiscount: discount,
