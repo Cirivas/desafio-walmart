@@ -1,10 +1,12 @@
-import React, { useCallback } from "react";
+import { useCallback, useState } from "react";
+import { FaShoppingCart } from "react-icons/fa";
 import { ShoppingCartController } from "../../adapters/shoppingCart/shoppingCart.controller";
 import { Product } from "../../domain/product";
 import { CartElement } from "../../domain/shopppingCart";
 import { Money } from "../ui-components/money/money";
 import { VList } from "../ui-components/vlist/vlist";
-import "./list.css";
+
+import "./shoppingcart.css";
 
 export type CartListProps = {
   shoppingCartCtrl: ShoppingCartController;
@@ -14,6 +16,7 @@ export function ShoppingCart({ shoppingCartCtrl }: CartListProps) {
   const cart = shoppingCartCtrl.getCart();
   const possibleDiscounts = cart.possibleDiscounts;
   const usedDiscount = cart.usedDiscount;
+  const [showingCart, toggleCart] = useState<boolean>(false);
 
   const handleMore = useCallback(
     (product: Product) => {
@@ -27,6 +30,11 @@ export function ShoppingCart({ shoppingCartCtrl }: CartListProps) {
       shoppingCartCtrl.removeProduct(product);
     },
     [shoppingCartCtrl]
+  );
+
+  const handleCartClick = useCallback(
+    () => toggleCart(!showingCart),
+    [showingCart]
   );
 
   const getTotalByBrand = (elements: CartElement[], brand: string): number => {
@@ -73,29 +81,35 @@ export function ShoppingCart({ shoppingCartCtrl }: CartListProps) {
   };
 
   return (
-    <div className="side-list-container">
-      {cart.products.length > 0 && (
-        <>
-          <VList
-            productsElements={cart.products}
-            onHandleMore={handleMore}
-            onHandleLess={handleLess}
-          />
-          {usedDiscount && (
-            <div className="bubble used-discount">
-              Se aplicó un descuento de{" "}
-              {<Money value={usedDiscount.discount} />} por haber comprado{" "}
-              {<Money value={usedDiscount.threshold} />} en productos{" "}
-              {usedDiscount.brand}{" "}
-            </div>
+    <div>
+      <FaShoppingCart size={40} color={"blue"} onClick={handleCartClick} />
+
+      {showingCart && (
+        <div className="side-list-container">
+          {cart.products.length > 0 && (
+            <>
+              <VList
+                productsElements={cart.products}
+                onHandleMore={handleMore}
+                onHandleLess={handleLess}
+              />
+              {usedDiscount && (
+                <div className="bubble used-discount">
+                  Se aplicó un descuento de{" "}
+                  {<Money value={usedDiscount.discount} />} por haber comprado{" "}
+                  {<Money value={usedDiscount.threshold} />} en productos{" "}
+                  {usedDiscount.brand}{" "}
+                </div>
+              )}
+              {getBestPossibleDiscount()}
+              <h3>
+                Total compra: <Money value={getTotal()} />{" "}
+              </h3>
+            </>
           )}
-          {getBestPossibleDiscount()}
-          <h3>
-            Total compra: <Money value={getTotal()} />{" "}
-          </h3>
-        </>
+          {cart.products.length === 0 && <span>Tu carro está vacío</span>}
+        </div>
       )}
-      {cart.products.length === 0 && <span>Tu carro está vacío</span>}
     </div>
   );
 }
